@@ -364,6 +364,8 @@ Per-class AP@50:
 
 > Training curves, confusion matrix, and per-class metrics are in `docs/`.
 
+according to the confusion matrix The model demonstrates strong classification performance across all PPE-related classes, with high true positive rates and minimal inter-class confusion. However, the confusion matrix reveals significant misclassification involving the background class, indicating a tendency toward false positives and missed detections. This suggests the need for improved background representation and hard negative sampling to enhance model robustness.
+
 ### Where the model performs well
 
 - Workers clearly visible and facing the camera at mid-range distance
