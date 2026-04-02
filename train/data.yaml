@@ -1,0 +1,16 @@
+names:
+- hard_hat
+- no_hard_hat
+- no_safety_vest
+- person
+- safety_vest
+nc: 5
+roboflow:
+  license: CC BY 4.0
+  project: construction-safety-gsnvb-amiuj
+  url: https://universe.roboflow.com/hashinifdo/construction-safety-gsnvb-amiuj/dataset/3
+  version: 3
+  workspace: hashinifdo
+test: /content/aggressive-balanced-dataset/test/images
+train: /content/aggressive-balanced-dataset/train/images
+val: /content/aggressive-balanced-dataset/valid/images
