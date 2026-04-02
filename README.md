@@ -5,7 +5,9 @@
 
 ## Overview
 
-Construction sites are among the most hazardous work environments in the world. This system automatically monitors construction site images and video to determine in real time whether workers are compliant with PPE requirements — answering the core question:
+This project presents an intelligent Construction Safety Monitoring System designed to detect workers, identify Personal Protective Equipment (PPE), and determine whether a scene is safe or unsafe.
+
+The system uses a deep learning-based object detection model (YOLO) combined with a rule-based safety engine to automatically detect violations such as missing helmets and safety vests.
 
 **Is this situation safe or unsafe?**
 
