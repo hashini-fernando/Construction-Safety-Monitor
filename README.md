@@ -29,9 +29,7 @@ Or launch the interactive web app:
 streamlit run app.py
 ```
 
-> **Download trained weights:** [best.pt — Google Drive](#)  
-> *(Replace `#` with your actual Google Drive link before submitting)*
-
+> **Download trained weights:** best.pt — ([Google Drive](https://drive.google.com/file/d/1l_zF1Tdcr7LnwmS0hi7AJQ_zbXBkQKUb/view?usp=drive_link))  
 ---
 
 ## Safety Rules Definition
@@ -72,78 +70,27 @@ Scene verdict:
   Any worker violated     →  UNSAFE
   Any uncertain detection →  append -UNCERTAIN suffix
   No workers detected     →  NO_WORKERS
-```
+
+The illustrtive image for Rule Engine in - docs/Rule_Engine
+
+The sample images tested with the inference rules
+
+``` bash
+python inference.py --weights "../model/best.pt" --source ../sample_images --save --save-dir ../outputs
+
+
+outputs/
+├── image1_annotated.jpg    ← annotated frame with boxes
+├── image1_report.json      ← structured JSON report
+├── image2_annotated.jpg
+├── image2_report.json
+
+
 
 ---
 
-## Dataset
+## Dataset documentation added in data/ dataprep_documentation.ipynb
 
-### Sources
-
-| Source | Images | License | How used |
-|---|---|---|---|
-| [Roboflow Universe — Construction Site Safety](https://universe.roboflow.com/roboflow-universe-projects/construction-site-safety) | ~2,800 | CC BY 4.0 | Primary base dataset |
-| [PPE Combined Model — Roboflow Universe](https://universe.roboflow.com/roboflow-universe-projects/personal-protective-equipment-combined-model) | ~500 subset | CC BY 4.0 | Diversity extension |
-| Unsplash / Pexels (CC0) | ~80 | CC0 | Custom addition — varied lighting & environments |
-
-**Total dataset size after cleaning:** ~3,400 images
-
-### Class Distribution (after balancing)
-
-| Class | Target Count | Strategy |
-|---|---|---|
-| `person` | ~2,200 | Undersampled (original: 3,522) |
-| `hard_hat` | ~2,200 | Used as-is (original: 2,653) |
-| `no_hard_hat` | ~2,200 | Augmented (original: 1,904) |
-| `safety_vest` | ~2,200 | Augmented 2× (original: 1,404) |
-| `no_safety_vest` | ~2,200 | Used as-is (original: 2,882) |
-
-> `machinery` and `vehicle` classes present in the base dataset were **excluded** — only 41–44 instances each, insufficient for reliable detection, and outside the scope of PPE compliance.
-
-### Train / Val / Test Split
-
-| Split | Images |
-|---|---|
-| Train | 70% |
-| Validation | 20% |
-| Test | 10% |
-
-### Dataset Diversity
-
-The dataset intentionally includes:
-- **Outdoor construction sites** — open lots, building frames, scaffolding
-- **Indoor environments** — warehouses, basement construction
-- **Lighting variation** — bright daylight, overcast, shadows, artificial lighting
-- **Scale variation** — workers close to camera and distant (via mosaic augmentation)
-- **Crowd variation** — single workers and multi-worker scenes
-
-### Annotation Approach
-
-- Annotated using **Roboflow** annotation tool
-- Bounding box format: YOLO (normalised `cx cy w h`)
-- Custom images (Unsplash/Pexels) annotated manually with Roboflow
-- Class remapping applied at export:
-  ```
-  Hardhat        → hard_hat
-  NO-Hardhat     → no_hard_hat
-  Safety Vest    → safety_vest
-  NO-Safety Vest → no_safety_vest
-  Person         → person
-  ```
-
-### Dataset Cleaning
-
-A dedicated cleaning pipeline (`data/dataset_cleaning.ipynb`) was run before training. It checked for and resolved:
-
-- Corrupt or unreadable image files
-- Missing or empty label files
-- Invalid YOLO coordinates (out of `[0,1]` range) — auto-clamped where possible
-- Wrong class IDs beyond defined range — rows dropped
-- Tiny bounding boxes below 0.05% image area — rows dropped
-- Near-duplicate frames (perceptual hash distance ≤ 8) — duplicates removed
-- Extreme aspect ratios — logged but retained (640px resize handles these)
-
----
 
 ## Model & Training
 
@@ -192,7 +139,7 @@ model.train(
 - **Framework:** Ultralytics YOLOv8 8.x
 
 > Full training notebook with loss curves and evaluation results:  
-> [Google Colab Notebook](#) *(Replace with your Colab share link)*
+> [Google Colab Notebook](https://colab.research.google.com/drive/12Z--dWQKKVMQxStdxXFo8ZmEy_4MhxN3) 
 
 ---
 
@@ -239,24 +186,23 @@ construction-safety-monitor/
 ├── .gitignore
 │
 ├── data/
-│   ├── dataset_cleaning.ipynb      # cleaning pipeline
-│   └── README_dataset.md           # dataset documentation
-│
+│   ├── dataset_cleaning.py      # cleaning pipeline used for training
+│   └── dataprep_document.ipynb          # dataset documentation
+│   |__dataprep_document.ipynb             #dataset curves
 ├── train/
 │   ├── construction_safety_training.ipynb   # full training notebook
 │   └── data.yaml                            # class names + split paths
 │
 ├── inference/
 │   ├── inference.py                # CLI inference pipeline
-│   └── zones.json                  # optional zone config
-│
+│   └── zones.json                 # optional zone config
+│   └── annotate.py                 # All OpenCV frame annotation functions.
+    └── core.py                     #detection, worker-PPE association, and compliance rule engine.
+    └── report.py                   # Structured report generation — JSON per frame, CSV log, summary.
 ├── app.py                          # Streamlit web frontend
 │
-├── docs/
-│   ├── safety_rules.md
-│   ├── training_curves.png
-│   ├── per_class_metrics.png
-│   └── inference_results.png
+├── docs/                           # results curves from training
+│   
 │
 └── sample_images/                  # ready-to-run test images
     ├── safe_scene_1.jpg
@@ -283,11 +229,11 @@ pip install -r requirements.txt
 
 ### Download trained weights
 
-Download `best.pt` from [Google Drive](#) and place it in the project root:
+Download `best.pt` from ([Google Drive](https://drive.google.com/file/d/1l_zF1Tdcr7LnwmS0hi7AJQ_zbXBkQKUb/view?usp=drive_link)) and place it in the project root:
 
 ```
 construction-safety-monitor/
-└── best.pt    ← place here
+└── model/best.pt    ← place here
 ```
 
 ---
@@ -331,14 +277,23 @@ python inference/inference.py --source 0 --show
 --show      Show live window during video/webcam inference
 ```
 
+or run the with streamlit ( simple Frontend)
+```bash
+streamlit run app.py
+```
+Streamlit will automatically open in your browser. if Not can access with (http://localhost:8501)
+
+The application supports multiple input types:
+
+- Single Image — Upload one image
+- Batch Images — Upload multiple images at once
+- Video — Upload a video file for analysis
+- Camera Snapshot — Capture an image using your device camera
+- Local Live Webcam — Real-time detection (runs locally only)
+
 ### Output structure
 
-```
-runs/inference/<timestamp>/
-├── annotated/          annotated images or video
-├── reports/            per-image JSON violation reports
-├── summary.json        aggregate stats
-└── violations_log.csv  flat log of every violation
+
 ```
 
 ### Example JSON report
@@ -392,22 +347,20 @@ Then open `http://localhost:8501` in your browser.
 
 > Results below are on the held-out **test set** (10% of dataset, never seen during training).
 
-| Metric | Value |
-|---|---|
-| mAP@50 | *(fill in from your results.csv)* |
-| mAP@50-95 | *(fill in)* |
-| Precision | *(fill in)* |
-| Recall | *(fill in)* |
+=== Test Set Results ===
+mAP@50      : 0.8632
+mAP@50-95   : 0.6096
+Precision   : 0.8689
+Recall      : 0.7912
 
 ### Per-class AP@50
 
-| Class | AP@50 |
-|---|---|
-| person | *(fill in)* |
-| hard_hat | *(fill in)* |
-| no_hard_hat | *(fill in)* |
-| safety_vest | *(fill in)* |
-| no_safety_vest | *(fill in)* |
+Per-class AP@50:
+  Hardhat              0.8756
+  NO-Hardhat           0.8354
+  NO-Safety Vest       0.8470
+  Person               0.8964
+  Safety Vest          0.8616
 
 > Training curves, confusion matrix, and per-class metrics are in `docs/`.
 
@@ -466,9 +419,7 @@ Undersampling `person` and `no_safety_vest` (from 3,500 → 2,200) slightly redu
 
 ---
 
-## Creativity & Innovation
-
-Beyond the baseline detection task, this submission includes:
+## Special Features
 
 **1. Worker–PPE Association Engine**
 Rather than scene-level flags, the system associates each PPE detection with its nearest worker using IoU + centroid proximity, enabling per-worker compliance reports rather than scene-level binary verdicts.

@@ -7,9 +7,9 @@ from PIL import Image
 from tqdm import tqdm
 from collections import Counter
 
-# =========================
-# CONFIG
-# =========================
+
+# Path configurations
+
 DATASET_PATH = r"D:\Assesments\safety-system\dataset"
 DATASET_PATH_TRAIN = os.path.join(DATASET_PATH, "train")
 OUTPUT_PATH = r"D:\Assesments\safety-system\cleaned-construction-safety-dataset"
@@ -23,9 +23,9 @@ TEST_RATIO = 0.1
 
 random.seed(42)
 
-# =========================
-# HELPERS
-# =========================
+
+# Helper functions
+
 def is_image(file):
     return os.path.splitext(file)[1] in IMG_EXTS
 
@@ -82,9 +82,7 @@ def get_hash(path):
     with open(path, "rb") as f:
         return hashlib.md5(f.read()).hexdigest()
 
-# =========================
-# CLEANING
-# =========================
+# Cleaning function
 def clean_dataset():
     image_dir = os.path.join(DATASET_PATH_TRAIN, "images")
     label_dir = os.path.join(DATASET_PATH_TRAIN, "labels")
@@ -106,27 +104,27 @@ def clean_dataset():
         label_path = os.path.join(label_dir, get_label(img_file))
 
         if not verify_image(img_path):
-            stats["corrupt_removed"] += 1
+            stats["corrupt_removed"] += 1 #remove corrupted images
             continue
 
         h = get_hash(img_path)
         if h in seen_hashes:
-            stats["duplicate_removed"] += 1
+            stats["duplicate_removed"] += 1 # remove duplicate images
             continue
         seen_hashes.add(h)
 
         if not os.path.exists(label_path):
-            stats["no_label_removed"] += 1
+            stats["no_label_removed"] += 1 # remove images without labels
             continue
 
         valid_boxes = clean_label(label_path)
         if valid_boxes == 0:
-            stats["empty_label_removed"] += 1
+            stats["empty_label_removed"] += 1 # remove images with empty labels
             continue
 
         resize_image(img_path)
 
-        cleaned_data.append((img_path, label_path))
+        cleaned_data.append((img_path, label_path)) 
         stats["kept"] += 1
 
     print("\nCleaning Summary:")
@@ -135,9 +133,9 @@ def clean_dataset():
 
     return cleaned_data
 
-# =========================
-# SPLITTING
-# =========================
+
+# Splitting into train/val/test
+
 def split_dataset(cleaned_data):
     random.shuffle(cleaned_data)
     total = len(cleaned_data)
@@ -164,9 +162,9 @@ def split_dataset(cleaned_data):
     for split_name, items in splits.items():
         print(f"  {split_name}: {len(items)} images")
 
-# =========================
+
 # MAIN
-# =========================
+
 if __name__ == "__main__":
     data = clean_dataset()
     split_dataset(data)

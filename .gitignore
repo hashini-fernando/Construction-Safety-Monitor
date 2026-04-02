@@ -1,0 +1,6 @@
+data/raw/
+train/runs/yolov8m_run1/weights/
+*.pt
+*.onnx
+__pycache__/
+*.pyc

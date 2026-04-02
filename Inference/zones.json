@@ -1,0 +1,47 @@
+[
+  {
+    "name": "Scaffolding Zone",
+    "description": "Elevated work area — highest risk zone. Full PPE mandatory at all times.",
+    "polygon": [[50, 50], [350, 50], [350, 400], [50, 400]],
+    "required_ppe": ["hard_hat", "safety_vest"],
+    "strict": true,
+    "color": [0, 60, 220],
+    "risk_level": "high"
+  },
+  {
+    "name": "Ground Work Zone",
+    "description": "Standard ground-level construction area. Hard hat minimum requirement.",
+    "polygon": [[360, 200], [750, 200], [750, 600], [360, 600]],
+    "required_ppe": ["hard_hat"],
+    "strict": false,
+    "color": [30, 160, 255],
+    "risk_level": "medium"
+  },
+  {
+    "name": "Machinery Zone",
+    "description": "Active heavy machinery area — full PPE mandatory due to impact and crush risk.",
+    "polygon": [[600, 30], [1050, 30], [1050, 350], [600, 350]],
+    "required_ppe": ["hard_hat", "safety_vest"],
+    "strict": true,
+    "color": [0, 60, 220],
+    "risk_level": "high"
+  },
+  {
+    "name": "Material Storage",
+    "description": "Storage and staging area. Hard hat required due to overhead load risk.",
+    "polygon": [[760, 400], [1050, 400], [1050, 700], [760, 700]],
+    "required_ppe": ["hard_hat"],
+    "strict": false,
+    "color": [30, 160, 255],
+    "risk_level": "medium"
+  },
+  {
+    "name": "Site Entry / Walkway",
+    "description": "General access corridor. Hard hat and vest required — workers pass through active zones.",
+    "polygon": [[50, 420], [340, 420], [340, 700], [50, 700]],
+    "required_ppe": ["hard_hat", "safety_vest"],
+    "strict": false,
+    "color": [30, 180, 255],
+    "risk_level": "medium"
+  }
+]
