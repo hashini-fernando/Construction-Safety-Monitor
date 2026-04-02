@@ -1,11 +1,6 @@
 # Construction Safety Monitor
 > Automated PPE compliance detection for construction sites using YOLOv8
 
-![Python](https://img.shields.io/badge/Python-3.10+-blue?style=flat-square)
-![YOLOv8](https://img.shields.io/badge/YOLOv8-Ultralytics-orange?style=flat-square)
-![Streamlit](https://img.shields.io/badge/Streamlit-Frontend-red?style=flat-square)
-![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
-
 ---
 
 ## Overview
@@ -172,7 +167,7 @@ Input (image / video / webcam)
 └─────────────────────────┘
         │
         ▼
-Output: annotated image/video + JSON report + violations_log.csv
+Output: annotated image/video + JSON report
 ```
 
 ---
@@ -205,9 +200,7 @@ construction-safety-monitor/
 │   
 │
 └── sample_images/                  # ready-to-run test images
-    ├── safe_scene_1.jpg
-    ├── violation_no_helmet.jpg
-    └── violation_no_vest.jpg
+└── output/                         # annotaed result with json report
 ```
 
 ---
@@ -385,19 +378,23 @@ according to the confusion matrix The model demonstrates strong classification p
 
 ## Design Decisions & Trade-offs
 
-### Why positive + negative classes?
+### positive + negative classes
 
 Rather than inferring absence ("no hard hat detected near worker"), the dataset explicitly labels both `hard_hat` and `no_hard_hat`. This gives the model a positive detection target for violations rather than relying on the absence of a positive class — which fails for occluded or distant workers where the PPE simply isn't visible.
 
-### Why IoU + centroid association?
+### IoU + centroid association
 
 Hard hat and safety vest boxes often don't fully overlap the person box — a helmet box sits at the very top of a person box with limited overlap. Using IoU alone with a strict threshold misses many valid associations. The centroid fallback catches cases where the PPE centroid falls inside the worker box even when IoU is low.
 
-### Why uncertainty flagging instead of a binary output?
+### used uncertainty flagging instead of a binary output
 
 A binary safe/unsafe output silently hides model uncertainty. Low-confidence predictions on occluded or distant workers are worse than flagging them for manual review. The `UNCERTAIN` suffix surfaces this to the operator rather than producing a false safety assurance.
 
-### Why YOLOv8m over YOLOv8s or YOLOv8l?
+### Model Selection - YOLO
+
+YOLO was selected due to its ability to perform real-time multi-object detection with high efficiency, making it well-suited for construction safety monitoring where both accuracy and speed are critical.
+
+### use YOLOv8m over YOLOv8s or YOLOv8l
 
 - `yolov8s` (11M params) — faster but noticeably lower recall on small objects (distant workers)
 - `yolov8m` (25M params) — sweet spot for this dataset size and task
