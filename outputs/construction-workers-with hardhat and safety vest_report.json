@@ -1,0 +1,38 @@
+{
+  "verdict": "SAFE",
+  "workers": [
+    {
+      "id": 1,
+      "box": [
+        425.5758972167969,
+        163.67393493652344,
+        888.783935546875,
+        820.3361206054688
+      ],
+      "conf": 0.8849798440933228,
+      "has_hardhat": true,
+      "has_vest": true,
+      "violations": [],
+      "uncertain": false
+    },
+    {
+      "id": 2,
+      "box": [
+        879.33447265625,
+        153.60780334472656,
+        1229.5780029296875,
+        819.0850219726562
+      ],
+      "conf": 0.85541170835495,
+      "has_hardhat": true,
+      "has_vest": true,
+      "violations": [],
+      "uncertain": false
+    }
+  ],
+  "inference_ms": 8627.8,
+  "workers_total": 2,
+  "workers_violated": 0,
+  "workers_compliant": 2,
+  "workers_uncertain": 0
+}

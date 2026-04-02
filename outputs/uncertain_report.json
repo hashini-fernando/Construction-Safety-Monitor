@@ -1,0 +1,44 @@
+{
+  "verdict": "UNSAFE-UNCERTAIN",
+  "workers": [
+    {
+      "id": 1,
+      "box": [
+        13.889025688171387,
+        103.94107818603516,
+        23.760944366455078,
+        121.25115966796875
+      ],
+      "conf": 0.6240254640579224,
+      "has_hardhat": false,
+      "has_vest": false,
+      "violations": [
+        "Missing hard hat",
+        "Missing safety vest"
+      ],
+      "uncertain": false
+    },
+    {
+      "id": 2,
+      "box": [
+        87.78577423095703,
+        111.65029907226562,
+        97.6446304321289,
+        136.67791748046875
+      ],
+      "conf": 0.3792628347873688,
+      "has_hardhat": false,
+      "has_vest": false,
+      "violations": [
+        "Missing hard hat (uncertain)",
+        "Missing safety vest (uncertain)"
+      ],
+      "uncertain": true
+    }
+  ],
+  "inference_ms": 1969.9,
+  "workers_total": 2,
+  "workers_violated": 2,
+  "workers_compliant": 0,
+  "workers_uncertain": 1
+}

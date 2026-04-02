@@ -1,0 +1,66 @@
+{
+  "verdict": "SAFE-UNCERTAIN",
+  "workers": [
+    {
+      "id": 1,
+      "box": [
+        0.2596321105957031,
+        527.4070434570312,
+        337.414306640625,
+        1952.615234375
+      ],
+      "conf": 0.8974667191505432,
+      "has_hardhat": true,
+      "has_vest": true,
+      "violations": [],
+      "uncertain": true
+    },
+    {
+      "id": 2,
+      "box": [
+        526.7786865234375,
+        451.24322509765625,
+        1333.432861328125,
+        1958.01611328125
+      ],
+      "conf": 0.8649129271507263,
+      "has_hardhat": true,
+      "has_vest": true,
+      "violations": [],
+      "uncertain": false
+    },
+    {
+      "id": 3,
+      "box": [
+        1258.0531005859375,
+        571.8377685546875,
+        1542.24560546875,
+        1572.257080078125
+      ],
+      "conf": 0.8407741785049438,
+      "has_hardhat": true,
+      "has_vest": true,
+      "violations": [],
+      "uncertain": false
+    },
+    {
+      "id": 4,
+      "box": [
+        252.2394256591797,
+        591.2527465820312,
+        613.3665771484375,
+        1958.0792236328125
+      ],
+      "conf": 0.7563347816467285,
+      "has_hardhat": true,
+      "has_vest": true,
+      "violations": [],
+      "uncertain": false
+    }
+  ],
+  "inference_ms": 2355.0,
+  "workers_total": 4,
+  "workers_violated": 0,
+  "workers_compliant": 4,
+  "workers_uncertain": 1
+}
